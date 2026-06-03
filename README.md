@@ -1,6 +1,6 @@
 # 🎬 Higgsfield MCP Server
 
-Servidor MCP para usar [Higgsfield AI](https://higgsfield.ai/) directamente desde Claude Desktop u otro cliente MCP compatible.
+Servidor MCP para usar [Higgsfield AI](https://higgsfield.ai/) desde **Claude Desktop**, **Perplexity** (Pro/Max/Enterprise) y cualquier cliente MCP compatible.
 
 > Genera imágenes y videos con IA de alta calidad desde tu chat.
 
@@ -13,23 +13,51 @@ Servidor MCP para usar [Higgsfield AI](https://higgsfield.ai/) directamente desd
 | `check_status` | Consulta el estado de una generación por `request_id` |
 | `cancel_generation` | Cancela una generación en cola |
 
-## Instalación
+---
 
-### 1. Clona el repo e instala dependencias
+## 🟣 Opción A: Deploy en Fly.io (para Perplexity)
+
+Perplexity requiere una **URL pública HTTP/SSE**. Deploy en Fly.io en menos de 2 minutos:
+
+```bash
+git clone https://github.com/luisitoys12/higgsfield-mcp
+cd higgsfield-mcp
+npm install
+
+# Crear app en Fly.io
+fly apps create higgsfield-mcp
+
+# Definir secrets (API keys de Higgsfield)
+fly secrets set HIGGSFIELD_API_KEY=tu_api_key_aqui
+fly secrets set HIGGSFIELD_API_SECRET=tu_api_secret_aqui
+
+# Deploy
+fly deploy
+```
+
+Tu URL SSE será: `https://higgsfield-mcp.fly.dev/sse`
+
+### Conectar en Perplexity
+
+1. Ve a **Perplexity** → Settings → **AI** → **Connectors** (o **MCP Servers**)
+2. Haz click en **+ Add custom connector**
+3. Ingresa:
+   - **Name:** Higgsfield AI
+   - **URL:** `https://higgsfield-mcp.fly.dev/sse`
+   - **Auth:** Open (sin autenticación adicional, las keys ya están en el servidor)
+4. Guarda y listo ✅
+
+> Requiere suscripción **Pro, Max o Enterprise** de Perplexity.
+
+---
+
+## 💙 Opción B: Claude Desktop (stdio local)
 
 ```bash
 git clone https://github.com/luisitoys12/higgsfield-mcp
 cd higgsfield-mcp
 npm install
 ```
-
-### 2. Obtén tu API Key de Higgsfield
-
-Entra a [higgsfield.ai](https://higgsfield.ai/) → Settings → API Keys y copia:
-- `HIGGSFIELD_API_KEY`
-- `HIGGSFIELD_API_SECRET`
-
-### 3. Configura Claude Desktop
 
 Edita `claude_desktop_config.json`:
 
@@ -51,19 +79,7 @@ Edita `claude_desktop_config.json`:
 }
 ```
 
-## Ejemplos de uso en Claude
-
-```
-Genera una imagen fotorealista de una ciudad de noche en México con nano banana
-```
-
-```
-Crea un video de 5 segundos de ondas en el océano con Seedance 2.0
-```
-
-```
-Revisa el estado del request d7e6c0f3-6699-4f6c-bb45-2ad7fd9158ff
-```
+---
 
 ## Modelos disponibles
 
@@ -83,7 +99,7 @@ Revisa el estado del request d7e6c0f3-6699-4f6c-bb45-2ad7fd9158ff
 | `higgsfield-ai/wan/v2-5` | Wan 2.5 |
 | `higgsfield-ai/minimax-hailuo/02` | MiniMax Hailuo 02 |
 
-> Los IDs exactos de cada modelo están en [docs.higgsfield.ai](https://docs.higgsfield.ai)
+---
 
 ## Licencia
 
